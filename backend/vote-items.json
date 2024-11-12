@@ -63,6 +63,10 @@
         {
             "id": 16,
             "image": "./vote-item-img/16.png"
+        },
+        {
+            "id": 17,
+            "image": "./vote-item-img/17.jpg"
         }
     ]
 }

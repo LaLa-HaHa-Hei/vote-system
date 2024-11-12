@@ -10,7 +10,7 @@
     <main>
         <template v-for="item in voteItems" :key="item.id">
             <div class="vote-item">
-                <img :src="item.image" alt="">
+                <img :src="item.image" alt="" @click="showImage(item.image)">
                 <input type="checkbox" v-model="selectedItems[item.id]" @change="checkVote(item.id)">
             </div>
         </template>
@@ -18,6 +18,11 @@
     <footer>
         <button @click="submit">提交</button>
     </footer>
+    
+    <!-- 遮罩层和放大图片的容器 -->
+    <div v-if="showModal" class="modal-overlay" @click="hideImage">
+        <img :src="selectedImage" alt="放大图片" class="enlarged-image">
+    </div>
 </template>
 
 <script setup>
@@ -30,6 +35,10 @@ const voteItems = ref([])
 const selectedItems = ref({})
 const votesNum = ref(10)
 const hasVoted = ref(false)
+
+// 控制遮罩层的显示和隐藏
+const showModal = ref(false)
+const selectedImage = ref('')
 
 onBeforeMount(async () => {
     let response = await axios.get('/api/get-vote-items')
@@ -63,6 +72,15 @@ async function submit() {
     else{
         alert(`投票失败！ error: ${data.error}`)
     }
+}
+
+function showImage(imageUrl) {
+    selectedImage.value = imageUrl
+    showModal.value = true
+}
+
+function hideImage() {
+    showModal.value = false
 }
 </script>
 
@@ -121,5 +139,24 @@ footer button {
     border: none;
     border-radius: 7px;
     margin: 10px;
+}
+/* 遮罩层样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.enlarged-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
 }
 </style>
