@@ -2,18 +2,17 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import CryptoJS from 'crypto-js'
+import axios from 'axios'
 
 const app = createApp(App)
 
 // 调用函数获取指纹字符串
-const fingerprint = getCanvasFingerprint();
-const md5Fingerprint = CryptoJS.MD5(fingerprint).toString();
-window.md5Fingerprint = md5Fingerprint;
+const fingerprint = getCanvasFingerprint()
+window.md5Fingerprint = CryptoJS.MD5(fingerprint).toString()
 
 app.use(router)
 
 app.mount('#app')
-
 
 function getCanvasFingerprint() {
     // 创建一个 canvas 元素

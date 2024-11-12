@@ -20,6 +20,13 @@ def get_db():
         db.row_factory = sqlite3.Row
     return db
 
+def query_db(query, args=(), one=False):
+    db = get_db()
+    cursor = db.execute(query, args)
+    rv = cursor.fetchall()
+    cursor.close()
+    return (rv[0] if rv else None) if one else rv
+
 app = Flask(
     __name__,
     template_folder='../frontend/dist',
@@ -47,15 +54,12 @@ def get_vote_items():
 def submit_vote_result():
     data = request.get_json()
     print(data)
-    db = get_db()
-    cursor = db.cursor()
-    # 用浏览器canvas指纹判断是否为重复投票
-    cursor.execute('SELECT COUNT(*) FROM fingerprints WHERE fingerprint = ?', (data['md5Fingerprint'],))
-    result = cursor.fetchone()
-    if result[0] > 0:
+    if has_voted(data['md5Fingerprint']):
         print('重复投票')
         return jsonify({'success': False, 'error': '重复投票'})
     else:
+        db = get_db()
+        cursor = db.cursor()
         cursor.execute('INSERT INTO fingerprints (fingerprint) VALUES (?)', (data['md5Fingerprint'],))
         for id, value in data['selectedItems'].items():
             if value:
@@ -71,14 +75,16 @@ def submit_vote_result():
 
 @app.route('/api/get-vote-results')
 def get_vote_results():
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute('''SELECT id, votes FROM vote_results''')
-    results = cursor.fetchall()
-    cursor.close()
-    vote_results = { 'voteResults': [{'id': row['id'], 'votes': row['votes']} for row in results]}
-    # print(json.dumps(vote_results, indent=4))
+    results = query_db('SELECT id, votes FROM vote_results')
+    vote_results = {'voteResults': [{'id': row['id'], 'votes': row['votes']} for row in results]}
     return jsonify(vote_results)
+
+@app.route('/api/does-have-voted', methods=['POST'])
+def does_have_voted():
+    data = request.get_json()
+    print(data)
+    fingerprint = data['md5Fingerprint']
+    return jsonify({'hasVoted': has_voted(fingerprint)})
 
 @app.route('/<path:path>')
 def catch_all(path):
@@ -88,5 +94,10 @@ def catch_all(path):
     # 否则返回index.html，交给前端路由
     return render_template('index.html')
 
+
+def has_voted(fingerprint):
+    result = query_db('SELECT COUNT(*) FROM fingerprints WHERE fingerprint = ?', (fingerprint,), one=True)
+    return result[0] > 0
+
 if __name__ == '__main__':
-    app.run(debug=False, port=8080)
+    app.run(debug=True, port=5000)
