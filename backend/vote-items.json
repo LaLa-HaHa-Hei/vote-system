@@ -2,23 +2,67 @@
     "voteItems": [
         {
             "id": 1,
-            "name": "选项1",
-            "image": "./vote-item-img/1.jpg"
+            "image": "./vote-item-img/1.png"
         },
         {
             "id": 2,
-            "name": "选项2",
-            "image": "./vote-item-img/2.jpg"
+            "image": "./vote-item-img/2.png"
         },
         {
             "id": 3,
-            "name": "选项3",
-            "image": "./vote-item-img/3.jpg"
+            "image": "./vote-item-img/3.png"
         },
         {
             "id": 4,
-            "name": "选项4",
-            "image": "./vote-item-img/4.jpg"
+            "image": "./vote-item-img/4.png"
+        },
+        {
+            "id": 5,
+            "image": "./vote-item-img/5.png"
+        },
+        {
+            "id": 6,
+            "image": "./vote-item-img/6.png"
+        },
+        {
+            "id": 7,
+            "image": "./vote-item-img/7.png"
+        },
+        {
+            "id": 8,
+            "image": "./vote-item-img/8.png"
+        },
+        {
+            "id": 9,
+            "image": "./vote-item-img/9.png"
+        },
+        {
+            "id": 10,
+            "image": "./vote-item-img/10.png"
+        },
+        {
+            "id": 11,
+            "image": "./vote-item-img/11.png"
+        },
+        {
+            "id": 12,
+            "image": "./vote-item-img/12.png"
+        },
+        {
+            "id": 13,
+            "image": "./vote-item-img/13.png"
+        },
+        {
+            "id": 14,
+            "image": "./vote-item-img/14.png"
+        },
+        {
+            "id": 15,
+            "image": "./vote-item-img/15.png"
+        },
+        {
+            "id": 16,
+            "image": "./vote-item-img/16.png"
         }
     ]
 }
