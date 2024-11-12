@@ -7,7 +7,12 @@
 <script setup>
 import axios from 'axios'
 import { ref, onMounted, nextTick } from 'vue'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core';
+import { GridComponent } from 'echarts/components';
+import { BarChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+
+echarts.use([GridComponent, BarChart, CanvasRenderer]);
 
 // [{ id: '1', votes: 10 }, { id: '2', votes: 20 }, { id: '3', votes: 30 }]
 const voteResults = ref([])
